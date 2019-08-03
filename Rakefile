@@ -3,6 +3,8 @@ require "fileutils"
 
 task :install do
   install_homebrew
+  install_brew_packages
+
   install_rbenv
   file_operation(Dir.glob('cli/git/*'))
 
@@ -52,6 +54,11 @@ end
 
 def setup_macos
   # TODO
+end
+
+def install_brew_packages
+  log_with_separator("Installing Homebrew packages.")
+  run %{brew install zsh ctags git hub tmux reattach-to-user-namespace the_silver_searcher fasd}
 end
 
 def install_sourcetree
