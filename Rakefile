@@ -6,7 +6,9 @@ task :install do
   install_brew_packages
 
   install_rbenv
+
   file_operation(Dir.glob('cli/git/*'))
+  file_operation(Dir.glob('cli/ag/*'))
 
   install_sourcetree
 end
