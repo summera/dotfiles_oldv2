@@ -60,7 +60,8 @@ end
 
 def install_brew_packages
   log_with_separator("Installing Homebrew packages.")
-  run %{brew install zsh ctags git hub tmux reattach-to-user-namespace the_silver_searcher fasd}
+  run("brew install zsh ctags git hub tmux reattach-to-user-namespace the_silver_searcher fasd")
+  run("brew install neovim")
 end
 
 def install_sourcetree
