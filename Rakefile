@@ -10,6 +10,8 @@ task :install do
   file_operation(Dir.glob("cli/git/*"))
   file_operation(Dir.glob("cli/ag/*"))
 
+  file_operation(Dir.glob("langs/ruby/*"))
+
   install_sourcetree
 end
 
