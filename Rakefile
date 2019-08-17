@@ -12,6 +12,7 @@ task :install do
 
   file_operation(Dir.glob("langs/ruby/*"))
   file_operation(Dir.glob('cli/ctags/*'))
+  file_operation(Dir.glob('cli/tmux/*'))
 
   install_sourcetree
 end
