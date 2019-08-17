@@ -11,6 +11,7 @@ task :install do
   file_operation(Dir.glob("cli/ag/*"))
 
   file_operation(Dir.glob("langs/ruby/*"))
+  file_operation(Dir.glob('cli/ctags/*'))
 
   install_sourcetree
 end
