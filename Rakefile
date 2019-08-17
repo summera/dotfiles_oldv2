@@ -4,6 +4,7 @@ require "fileutils"
 task :install do
   install_homebrew
   install_brew_packages
+  install_apps
 
   install_rbenv
 
@@ -15,7 +16,6 @@ task :install do
   file_operation(Dir.glob('cli/tmux/*'))
   file_operation(Dir.glob('cli/readline/*'))
 
-  install_sourcetree
 end
 
 task :default => "install"
@@ -69,9 +69,21 @@ def install_brew_packages
   run("brew install neovim")
 end
 
-def install_sourcetree
-  log_with_separator("Installing sourcetree.")
+def install_apps
+  log_with_separator("Installing apps with Homebrew cask.")
+  run("brew tap homebrew/cask-drivers") # Needed for sonos
+
   run("brew cask install sourcetree")
+  run("brew cask install google-chrome")
+  run("brew cask install hammerspoon")
+  run("brew cask install sublime-text")
+  run("brew cask install spotify")
+  run("brew cask install 1password")
+  run("brew cask install slack")
+  run("brew cask install docker")
+  run("brew cask install firefox")
+  run("brew cask install timing")
+  run("brew cask install sonos")
 end
 
 private
