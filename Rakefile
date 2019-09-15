@@ -10,15 +10,13 @@ task :install do
   install_iterm_theme
 
   install_rbenv
+  file_operation(Dir.glob("langs/ruby/*"))
 
   file_operation(Dir.glob("cli/git/*"))
   file_operation(Dir.glob("cli/ag/*"))
-
-  file_operation(Dir.glob("langs/ruby/*"))
   file_operation(Dir.glob('cli/ctags/*'))
   file_operation(Dir.glob('cli/tmux/*'))
   file_operation(Dir.glob('cli/readline/*'))
-
 end
 
 task :default => "install"
