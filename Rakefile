@@ -4,7 +4,9 @@ require "fileutils"
 task :install do
   install_homebrew
   install_brew_packages
+
   install_apps
+  file_operation(Dir.glob('apps/hammerspoon'))
 
   install_rbenv
 
