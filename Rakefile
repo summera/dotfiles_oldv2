@@ -7,6 +7,7 @@ task :install do
 
   install_apps
   file_operation(Dir.glob('apps/hammerspoon'))
+  install_iterm_theme
 
   install_rbenv
 
@@ -89,7 +90,77 @@ def install_apps
   run("brew cask install sonos") unless app_installed?("Sonos")
 end
 
+def install_iterm_theme
+  if !File.exists?(File.join(ENV["HOME"], "/Library/Preferences/com.googlecode.iterm2.plist"))
+    puts "======================================================"
+    puts "Please check your color settings in iTerm2 to make sure things are swell."
+    puts "Preferences> Profiles> [your profile]> Colors> Load Preset.."
+    puts "======================================================"
+    return
+  end
+
+  # Ask the user which theme he wants to install
+  message = "Which theme would you like to apply to your iTerm2 profile?"
+  color_scheme = ask message, iterm_available_themes
+
+  return if color_scheme == "None"
+
+  color_scheme_file = File.join("apps/iterm", "#{color_scheme}.itermcolors")
+
+  # Ask the user on which profile he wants to install the theme
+  profiles = iterm_profile_list
+  message = "I've found #{profiles.size} #{profiles.size > 1 ? "profiles": "profile"} on your iTerm2 configuration, which one would you like to apply the color theme to?"
+  profiles << "All"
+  selected = ask message, profiles
+
+  if selected == 'All'
+    (profiles.size-1).times { |idx| apply_theme_to_iterm_profile_idx idx, color_scheme_file }
+  else
+    apply_theme_to_iterm_profile_idx profiles.index(selected), color_scheme_file
+  end
+end
+
+def iterm_available_themes
+   Dir["apps/iterm/*.itermcolors"].map { |value| File.basename(value, ".itermcolors") } << "None"
+end
+
+def iterm_profile_list
+  profiles = Array.new
+
+  begin
+    profiles <<  %x{ /usr/libexec/PlistBuddy -c "Print :'New Bookmarks':#{profiles.size}:Name" ~/Library/Preferences/com.googlecode.iterm2.plist 2>/dev/null }
+  end while $?.exitstatus==0
+
+  profiles.pop
+  profiles
+end
+
+def apply_theme_to_iterm_profile_idx(index, color_scheme_path)
+  values = Array.new
+  16.times { |i| values << "Ansi #{i} Color" }
+  values << ["Background Color", "Bold Color", "Cursor Color", "Cursor Text Color", "Foreground Color", "Selected Text Color", "Selection Color"]
+  values.flatten.each { |entry| run %{ /usr/libexec/PlistBuddy -c "Delete :'New Bookmarks':#{index}:'#{entry}'" ~/Library/Preferences/com.googlecode.iterm2.plist } }
+
+  run %{ /usr/libexec/PlistBuddy -c "Merge '#{color_scheme_path}' :'New Bookmarks':#{index}" ~/Library/Preferences/com.googlecode.iterm2.plist }
+  run %{ defaults read com.googlecode.iterm2 }
+end
+
 private
+
+def ask(message, values)
+  puts message
+  while true
+    values.each_with_index { |val, idx| puts " #{idx+1}. #{val}" }
+    selection = STDIN.gets.chomp
+    if (Float(selection)==nil rescue true) || selection.to_i < 0 || selection.to_i > values.size+1
+      puts "ERROR: Invalid selection.\n\n"
+    else
+      break
+    end
+  end
+  selection = selection.to_i-1
+  values[selection]
+end
 
 def installed?(cmd)
   `which #{cmd}`
