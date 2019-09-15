@@ -75,6 +75,7 @@ def install_apps
   log_with_separator("Installing apps with Homebrew cask.")
   run("brew tap homebrew/cask-drivers") # Needed for sonos
 
+  run("brew cask install iterm2") unless app_installed?("iTerm")
   run("brew cask install sourcetree") unless app_installed?("Sourcetree")
   run("brew cask install google-chrome") unless app_installed?("Google Chrome")
   run("brew cask install hammerspoon") unless app_installed?("Hammerspoon")
