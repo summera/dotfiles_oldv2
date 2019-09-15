@@ -75,23 +75,27 @@ def install_apps
   log_with_separator("Installing apps with Homebrew cask.")
   run("brew tap homebrew/cask-drivers") # Needed for sonos
 
-  run("brew cask install sourcetree")
-  run("brew cask install google-chrome")
-  run("brew cask install hammerspoon")
-  run("brew cask install sublime-text")
-  run("brew cask install spotify")
-  run("brew cask install 1password")
-  run("brew cask install slack")
-  run("brew cask install docker")
-  run("brew cask install firefox")
-  run("brew cask install timing")
-  run("brew cask install sonos")
+  run("brew cask install sourcetree") unless app_installed?("Sourcetree")
+  run("brew cask install google-chrome") unless app_installed?("Google Chrome")
+  run("brew cask install hammerspoon") unless app_installed?("Hammerspoon")
+  run("brew cask install sublime-text") unless app_installed?("Sublime Text")
+  run("brew cask install spotify") unless app_installed?("Spotify")
+  run("brew cask install 1password") unless app_installed?("1Password")
+  run("brew cask install slack") unless app_installed?("Slack")
+  run("brew cask install docker") unless app_installed?("Docker")
+  run("brew cask install firefox") unless app_installed?("Firefox")
+  run("brew cask install timing") unless app_installed?("Timing")
+  run("brew cask install sonos") unless app_installed?("Sonos")
 end
 
 private
 
 def installed?(cmd)
   `which #{cmd}`
+end
+
+def app_installed?(app)
+  !`system_profiler SPApplicationsDataType | grep -i -w "#{app}"`.to_s.strip.empty?
 end
 
 def run(cmd)
