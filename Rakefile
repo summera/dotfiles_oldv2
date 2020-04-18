@@ -6,7 +6,7 @@ task :install do
   install_brew_packages
 
   install_apps
-  file_operation(Dir.glob('apps/hammerspoon'))
+  file_operation(Dir.glob("apps/hammerspoon"))
   install_iterm_theme
 
   install_rbenv
@@ -14,9 +14,9 @@ task :install do
 
   file_operation(Dir.glob("cli/git/*"))
   file_operation(Dir.glob("cli/ag/*"))
-  file_operation(Dir.glob('cli/ctags/*'))
-  file_operation(Dir.glob('cli/tmux/*'))
-  file_operation(Dir.glob('cli/readline/*'))
+  file_operation(Dir.glob("cli/ctags/*"))
+  file_operation(Dir.glob("cli/tmux/*"))
+  file_operation(Dir.glob("cli/readline/*"))
 end
 
 task :default => "install"
