@@ -1,0 +1,3 @@
+Plug 'itchyny/lightline.vim'
+Plug 'airblade/vim-gitgutter'
+Plug 'junegunn/seoul256.vim'

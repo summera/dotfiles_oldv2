@@ -17,6 +17,10 @@ task :install do
   file_operation(Dir.glob("cli/ctags/*"))
   file_operation(Dir.glob("cli/tmux/*"))
   file_operation(Dir.glob("cli/readline/*"))
+
+  file_operation(Dir.glob('editors/vim'))
+  file_operation(Dir.glob('editors/nvim'), :symlink, true)
+  Rake::Task["install_plug"].execute
 end
 
 task :default => "install"
@@ -64,10 +68,35 @@ def setup_macos
   # TODO
 end
 
+desc "Runs Plug installer in a clean vim environment"
+task :install_plug do
+  puts "======================================================"
+  puts "Installing and updating plugs."
+  puts "The installer will now proceed to run PlugInstall."
+  puts "======================================================"
+
+  puts ""
+
+  plug_path = File.join(ENV["HOME"], "vim", "autoload")
+  unless File.exists? plug_path
+    run %{
+      mkdir -p ~/.vim/autoload
+      curl -fLo ~/.vim/autoload/plug.vim \
+          https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    }
+  end
+
+  # Install/update plugins
+  system "vim --noplugin -u #{ENV["HOME"]}/.vim/plugs.vim -N " \
+    "\"+set hidden\" \"+syntax on\" +PlugClean +PlugInstall +qall"
+end
+
 def install_brew_packages
   log_with_separator("Installing Homebrew packages.")
-  run("brew install zsh ctags git hub tmux reattach-to-user-namespace the_silver_searcher fasd")
-  run("brew install neovim")
+  run("brew install zsh ctags git hub tmux reattach-to-user-namespace the_silver_searcher fasd python neovim")
+
+  # Python 3 support for neovim. This is needed for deoplete vim plugin
+  run("pip3 install --upgrade pynvim")
 end
 
 def install_apps
@@ -193,6 +222,7 @@ def file_operation(files, method = :symlink, xdg_config = false)
     source = "#{ENV["PWD"]}/#{f}"
 
     if xdg_config
+      run %{ mkdir -p #{ENV["HOME"]}/.config }
       target = "#{ENV["HOME"]}/.config/#{file}"
     else
       target = "#{ENV["HOME"]}/.#{file}"

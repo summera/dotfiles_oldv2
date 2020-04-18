@@ -1,0 +1,3 @@
+Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+Plug 'neomake/neomake'
+Plug 'sheerun/vim-polyglot'
