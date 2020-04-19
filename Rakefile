@@ -20,7 +20,7 @@ task :install do
 
   file_operation(Dir.glob('editors/vim'))
   file_operation(Dir.glob('editors/nvim'), :symlink, true)
-  Rake::Task["install_plug"].execute
+  install_vim_plugins
 end
 
 task :default => "install"
@@ -68,11 +68,9 @@ def setup_macos
   # TODO
 end
 
-desc "Runs Plug installer in a clean vim environment"
-task :install_plug do
+def install_vim_plugins
   puts "======================================================"
-  puts "Installing and updating plugs."
-  puts "The installer will now proceed to run PlugInstall."
+  puts "Installing and updating vim plugins."
   puts "======================================================"
 
   puts ""
