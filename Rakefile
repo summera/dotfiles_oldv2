@@ -21,6 +21,8 @@ task :install do
   file_operation(Dir.glob('editors/vim'))
   file_operation(Dir.glob('editors/nvim'), :symlink, true)
   install_vim_plugins
+
+  configure_zsh
 end
 
 task :default => "install"
@@ -68,11 +70,41 @@ def setup_macos
   # TODO
 end
 
+def configure_zsh
+  puts "======================================================"
+  puts "Installing prezto."
+  puts "======================================================"
+  puts ""
+
+  run("git clone --recursive https://github.com/sorin-ionescu/prezto.git ${ZDOTDIR:-$HOME}/.zprezto")
+
+  puts "Configuring symlinks..."
+  Dir.glob("#{ENV["HOME"]}/.zprezto/runcoms/z*").each do |file|
+    target = "${ZDOTDIR:-$HOME}/.#{File.basename(file)}"
+    puts "Source: #{file}"
+    puts "Target: #{target}"
+    run("ln -nfs #{file} #{target}")
+  end
+
+  file_operation(Dir.glob("cli/zsh/prezto_overrides/*"))
+
+  run("mkdir -p #{ENV["HOME"]}/.zsh")
+  Dir.glob("cli/zsh/*.zsh").each do |file|
+    target = "#{ENV["HOME"]}/.zsh/#{File.basename(file)}"
+    source = "#{ENV["PWD"]}/#{file}"
+    puts "Source: #{source}"
+    puts "Target: #{target}"
+    run("ln -nfs #{source} #{target}")
+  end
+
+  # Set default shell to zsh
+  run("chsh -s /bin/zsh")
+end
+
 def install_vim_plugins
   puts "======================================================"
   puts "Installing and updating vim plugins."
   puts "======================================================"
-
   puts ""
 
   plug_path = File.join(ENV["HOME"], "vim", "autoload")
