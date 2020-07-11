@@ -145,6 +145,7 @@ def install_apps
   run("brew cask install firefox") unless app_installed?("Firefox")
   run("brew cask install timing") unless app_installed?("Timing")
   run("brew cask install sonos") unless app_installed?("Sonos")
+  run("brew cask install logitech-options") unless app_installed?("Logi Options")
 end
 
 def install_iterm_theme
