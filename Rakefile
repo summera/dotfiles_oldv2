@@ -220,7 +220,7 @@ def ask(message, values)
 end
 
 def installed?(cmd)
-  `which #{cmd}`
+  !`which #{cmd}`.empty?
 end
 
 def app_installed?(app)
