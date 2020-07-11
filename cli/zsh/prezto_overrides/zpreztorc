@@ -40,12 +40,12 @@ zstyle ':prezto:load' pmodule \
   'completion' \
   'syntax-highlighting' \
   'history-substring-search' \
-  'prompt' \
   'git' \
   'ssh' \
   'tmux' \
   'ruby' \
-  'fasd'
+  'fasd' \
+  'prompt'
 
 #
 # Autosuggestions
