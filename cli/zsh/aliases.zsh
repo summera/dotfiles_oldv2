@@ -33,3 +33,6 @@ alias be='bundle exec'
 
 # Vim
 alias v='nvim'
+
+alias rm='rmtrash'
+alias rmdir='rmdirtrash'
