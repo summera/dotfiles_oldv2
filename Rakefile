@@ -25,6 +25,11 @@ task :install do
   configure_zsh
 end
 
+task :exec, [:method] do |t, args|
+  log_with_separator("Running #{args[:method]}")
+  send(args[:method])
+end
+
 task :default => "install"
 
 def install_homebrew
