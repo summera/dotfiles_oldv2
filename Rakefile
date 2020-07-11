@@ -128,7 +128,7 @@ end
 
 def install_brew_packages
   log_with_separator("Installing Homebrew packages.")
-  run("brew install zsh ctags git hub tmux reattach-to-user-namespace the_silver_searcher fasd python neovim")
+  run("brew install zsh ctags git hub tmux reattach-to-user-namespace the_silver_searcher fasd python neovim rmtrash notion")
 
   # Python 3 support for neovim. This is needed for deoplete vim plugin
   run("pip3 install --upgrade pynvim")
