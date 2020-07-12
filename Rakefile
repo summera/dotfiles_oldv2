@@ -56,17 +56,6 @@ def install_rbenv
   end
 end
 
-def install_nvm
-  # TODO
-  #
-  # if installed?("nvm")
-  #   log_with_separator("Node version manager already installed.")
-  # else
-  #   log_with_separator("Installing node version manager.")
-  #   run("curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash")
-  # end
-end
-
 def install_python
   # TODO
 end
