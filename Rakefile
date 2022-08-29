@@ -37,8 +37,10 @@ def install_homebrew
     log_with_separator("Homebrew already installed.")
   else
     log_with_separator("Installing Homebrew")
-    run(%{ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"})
+    run(%{/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"})
   end
+
+  run(%{eval "$(/opt/homebrew/bin/brew shellenv)"})
 end
 
 def install_rbenv
@@ -117,7 +119,7 @@ end
 
 def install_brew_packages
   log_with_separator("Installing Homebrew packages.")
-  run("brew install zsh ctags git hub tmux reattach-to-user-namespace the_silver_searcher fasd python neovim rmtrash notion postgresql yarn")
+  run("brew install zsh ctags git hub tmux reattach-to-user-namespace the_silver_searcher fasd python neovim trash notion postgresql@14 yarn")
 
   # Python 3 support for neovim. This is needed for deoplete vim plugin
   run("pip3 install --upgrade pynvim")
@@ -127,19 +129,16 @@ def install_apps
   log_with_separator("Installing apps with Homebrew cask.")
   run("brew tap homebrew/cask-drivers") # Needed for sonos
 
-  run("brew cask install iterm2") unless app_installed?("iTerm")
-  run("brew cask install sourcetree") unless app_installed?("Sourcetree")
-  run("brew cask install google-chrome") unless app_installed?("Google Chrome")
-  run("brew cask install hammerspoon") unless app_installed?("Hammerspoon")
-  run("brew cask install sublime-text") unless app_installed?("Sublime Text")
-  run("brew cask install spotify") unless app_installed?("Spotify")
-  run("brew cask install 1password") unless app_installed?("1Password")
-  run("brew cask install slack") unless app_installed?("Slack")
-  run("brew cask install docker") unless app_installed?("Docker")
-  run("brew cask install firefox") unless app_installed?("Firefox")
-  run("brew cask install timing") unless app_installed?("Timing")
-  run("brew cask install sonos") unless app_installed?("Sonos")
-  run("brew cask install logitech-options") unless app_installed?("Logi Options")
+  run("brew install iterm2 --cask") unless app_installed?("iTerm")
+  run("brew install sourcetree --cask") unless app_installed?("Sourcetree")
+  run("brew install google-chrome --cask") unless app_installed?("Google Chrome")
+  run("brew install hammerspoon --cask") unless app_installed?("Hammerspoon")
+  run("brew install sublime-text --cask") unless app_installed?("Sublime Text")
+  run("brew install spotify --cask") unless app_installed?("Spotify")
+  run("brew install 1password") unless app_installed?("1Password")
+  run("brew install slack --cask") unless app_installed?("Slack")
+  run("brew install docker --cask") unless app_installed?("Docker")
+  run("brew install logitech-options --cask") unless app_installed?("Logi Options")
 end
 
 def install_iterm_theme
